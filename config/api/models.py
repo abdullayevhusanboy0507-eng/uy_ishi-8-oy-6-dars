@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Genre(models.Model):
     name = models.CharField(max_length=255)
@@ -30,6 +30,9 @@ class Movie(models.Model):
 
 class Comment(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    user_name = models.CharField(max_length=255)
+    user_name = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     comment = models.TextField()
     
+    
+    def __str__(self):
+        return self.comment
