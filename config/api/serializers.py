@@ -10,10 +10,10 @@ class MovieSerializerGenre(serializers.ModelSerializer):
         
 
 class GenreSerializer(serializers.ModelSerializer):  
-    movies = serializers.StringRelatedField(many=True)
-    movies = serializers.PrimaryKeyRelatedField(many=True, read_only = True)
-    movies = serializers.HyperlinkedRelatedField(many=True,read_only=True,view_name='movie-detail')
-    movies = serializers.SlugRelatedField(many=True,read_only=True,slug_field = 'name')
+    # movies = serializers.StringRelatedField(many=True)
+    # movies = serializers.PrimaryKeyRelatedField(many=True, read_only = True)
+    # movies = serializers.HyperlinkedRelatedField(many=True,read_only=True,view_name='movie-detail')
+    # movies = serializers.SlugRelatedField(many=True,read_only=True,slug_field = 'name')
     url = serializers.HyperlinkedIdentityField(view_name='genre-detail')        
 
     movies = MovieSerializerGenre(many=True)
@@ -52,10 +52,10 @@ class MovieSerializerDirector(serializers.ModelSerializer):
         fields = '__all__'
 
 class DirectorSerializer(serializers.ModelSerializer):
-    movies = serializers.StringRelatedField(many=True)
-    movies = serializers.PrimaryKeyRelatedField(many=True, read_only = True)
-    movies = serializers.HyperlinkedRelatedField(many=True,read_only=True,view_name='movie-detail')
-    movies = serializers.SlugRelatedField(many=True,read_only=True,slug_field = 'name')
+    # movies = serializers.StringRelatedField(many=True)
+    # movies = serializers.PrimaryKeyRelatedField(many=True, read_only = True)
+    # movies = serializers.HyperlinkedRelatedField(many=True,read_only=True,view_name='movie-detail')
+    # movies = serializers.SlugRelatedField(many=True,read_only=True,slug_field = 'name')
     url = serializers.HyperlinkedIdentityField(view_name='director-detail') 
 
     movies = MovieSerializerDirector(many=True)

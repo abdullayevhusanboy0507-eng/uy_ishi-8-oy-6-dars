@@ -1,36 +1,43 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import permissions
 from rest_framework.generics import get_object_or_404
+from rest_framework.viewsets import ModelViewSet
 
 from .models import Genre, Director, Movie, Comment
 from .serializers import GenreSerializer, DirectorSerializer, MovieSerializer, CommentSerializer
 from .permissions import MyAuthenticatedOrReadOnly, CommentAuthenticatedOrReadOnly
 
-class GenreAPIView(ListCreateAPIView):
+
+class GenreAPIViewSet(ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+    # permission_classes = [MyAuthenticatedOrReadOnly]
+
+# class GenreAPIView(ListCreateAPIView):
+#     queryset = Genre.objects.all()
+#     serializer_class = GenreSerializer
 
 
-class GenreRetreveAPIView(RetrieveUpdateDestroyAPIView):
+# class GenreRetreveAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     lookup_field = 'pk'
     lookup_url_kwarg = 'genre_id'
     permission_classes = permissions.DjangoModelPermissionsOrAnonReadOnly
     
-class DirectorAPIView(ListCreateAPIView):
+class DirectorAPIView(ModelViewSet):
     queryset = Director.objects.all()
     serializer_class = DirectorSerializer
 
 
-class DirectorRetreveAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Director.objects.all()
-    serializer_class = DirectorSerializer
-    lookup_field = 'pk'
-    lookup_url_kwarg = 'director_id'
+# class DirectorRetreveAPIView(RetrieveUpdateDestroyAPIView):
+#     queryset = Director.objects.all()
+#     serializer_class = DirectorSerializer
+#     lookup_field = 'pk'
+#     lookup_url_kwarg = 'director_id'
     
 
-class MovieAPIView(ListCreateAPIView):
+class MovieAPIView(ModelViewSet):
     
     def get_queryset(self):
         genre_id = self.kwargs.get('genre_id')
@@ -44,14 +51,14 @@ class MovieAPIView(ListCreateAPIView):
         return MovieSerializer
     
 
-class MovieRetreveAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Movie.objects.all()
-    serializer_class = MovieSerializer
-    lookup_field = 'pk'
-    lookup_url_kwarg = 'movie_id'  
+# class MovieRetreveAPIView(RetrieveUpdateDestroyAPIView):
+#     queryset = Movie.objects.all()
+#     serializer_class = MovieSerializer
+#     lookup_field = 'pk'
+#     lookup_url_kwarg = 'movie_id'  
     
 
-class CommentAPIView(ListCreateAPIView):
+class CommentAPIView(ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [MyAuthenticatedOrReadOnly, CommentAuthenticatedOrReadOnly]
@@ -66,9 +73,3 @@ class CommentAPIView(ListCreateAPIView):
         serializer.save()
         return serializer
     
-class CommentRetreveAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
-    lookup_field = 'pk'
-    lookup_url_kwarg = 'comment_id'
-    permission_classes = [MyAuthenticatedOrReadOnly, CommentAuthenticatedOrReadOnly]

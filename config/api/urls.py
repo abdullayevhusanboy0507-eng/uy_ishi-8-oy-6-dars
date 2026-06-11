@@ -1,14 +1,19 @@
-from django.urls import path
+from rest_framework.routers import SimpleRouter, DefaultRouter
+from django.urls import path, include
 
 from .views import *
 
+router = DefaultRouter()
+router.register('genres',GenreAPIViewSet,basename='genres')
+router.register('directors',DirectorAPIView,basename='directors')
+router.register('movie',MovieAPIView,basename='movie')
+
+
 urlpatterns = [
-    path('genre/', GenreAPIView.as_view()),
-    path('genre/<int:genre_id>/', GenreRetreveAPIView.as_view(),name='genre-detail'),
-    path('director/', DirectorAPIView.as_view()),
-    path('director/<int:director_id>/', DirectorRetreveAPIView.as_view(),name='director-detail'),
-    path('movie/', MovieAPIView.as_view()),
-    path('movie/<int:movie_id>/', MovieRetreveAPIView.as_view(),name='movie-detail'),
-    path('movie/<int:movie_id>/comment/', CommentAPIView.as_view()),
-    path('movie/<int:movie_id>/comment/<int:comment_id>/', CommentRetreveAPIView.as_view()),
+    path('', include(router.urls)),
+    path('movie/<int:movie_id>/comment/', CommentAPIView.as_view({'get':'list','post':'create'})),
+    path('movie/<int:movie_id>/comment/<int:comment_id>/', CommentAPIView.as_view({'get':'retrieve','put':'update',
+                                                           'patch':'partial_update','delete':'destroy'})),
 ]
+
+
