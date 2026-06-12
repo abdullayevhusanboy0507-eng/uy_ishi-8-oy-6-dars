@@ -11,7 +11,7 @@ from .permissions import MyAuthenticatedOrReadOnly, CommentAuthenticatedOrReadOn
 class GenreAPIViewSet(ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    # permission_classes = [MyAuthenticatedOrReadOnly]
+    permission_classes = [MyAuthenticatedOrReadOnly]
 
 # class GenreAPIView(ListCreateAPIView):
 #     queryset = Genre.objects.all()
@@ -19,11 +19,11 @@ class GenreAPIViewSet(ModelViewSet):
 
 
 # class GenreRetreveAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Genre.objects.all()
-    serializer_class = GenreSerializer
-    lookup_field = 'pk'
-    lookup_url_kwarg = 'genre_id'
-    permission_classes = permissions.DjangoModelPermissionsOrAnonReadOnly
+    # queryset = Genre.objects.all()
+    # serializer_class = GenreSerializer
+    # lookup_field = 'pk'
+    # lookup_url_kwarg = 'genre_id'
+    # permission_classes = permissions.DjangoModelPermissionsOrAnonReadOnly
     
 class DirectorAPIView(ModelViewSet):
     queryset = Director.objects.all()
@@ -41,9 +41,13 @@ class MovieAPIView(ModelViewSet):
     
     def get_queryset(self):
         genre_id = self.kwargs.get('genre_id')
+
+        queryset = Movie.objects.all()
+
         if genre_id:
-            return self.queryset.filter(genre_id=genre_id)
-        return self.queryset.all()
+            queryset = queryset.filter(genre_id=genre_id)
+
+        return queryset
     
     def get_serializer_class(self):
         if self.request.user.is_staff:
